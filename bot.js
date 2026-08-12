@@ -176,6 +176,57 @@ async function handleSlash(i) {
     await i.reply({ content: `✅ ${user} adicionado ao ticket.` });
   }
 
+  // /painel
+  else if (cmd === 'painel') {
+    if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
+
+    await i.deferReply({ ephemeral: true });
+
+    // Embed principal
+    const embedPrincipal = new EmbedBuilder()
+      .setColor(0x0ea5e9)
+      .setAuthor({ name: 'Veltro — Painel de Otimização', iconURL: client.user.displayAvatarURL() })
+      .setTitle('⚡ Veltro Premium')
+      .setDescription(
+        '> O otimizador mais completo para Windows.\n> Mais FPS, menos lag, PC mais rápido.\n\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      )
+      .addFields(
+        { name: '🚀 Performance',     value: 'CPU · GPU · RAM · Disco', inline: true },
+        { name: '🌐 Rede',            value: 'Ping · DNS · TCP/IP',      inline: true },
+        { name: '🎮 Gaming',          value: 'FPS · Input lag · DPI',    inline: true },
+        { name: '🧹 Limpeza',         value: 'Temp · Cache · Lixo',      inline: true },
+        { name: '🔒 Segurança',       value: 'Privacidade · Tweaks',     inline: true },
+        { name: '🎯 Aim Trainer',     value: 'Treino de mira integrado', inline: true },
+        { name: '💾 500+ Tweaks',     value: 'Comandos reais no sistema',inline: true },
+        { name: '🔄 Auto-Update',     value: 'Sempre na versão mais nova',inline: true },
+        { name: '💬 Suporte 24/7',    value: 'Discord sempre disponível', inline: true },
+      )
+      .addFields({
+        name: '💰 Planos',
+        value: '`Mensal` — 30 dias\n`Trimestral` — 90 dias\n`Vitalício` — Para sempre',
+        inline: false
+      })
+      .setFooter({ text: 'Veltro • veltrootm.netlify.app' })
+      .setTimestamp();
+
+    // Botões de ação
+    const row1 = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('painel_comprar').setLabel('🛒 Comprar').setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('painel_suporte').setLabel('🎫 Suporte').setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('painel_key').setLabel('🔑 Problema com Chave').setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('painel_duvida').setLabel('❓ Dúvida').setStyle(ButtonStyle.Secondary),
+    );
+
+    const row2 = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setLabel('🌐 Site').setURL('https://veltrootm.netlify.app').setStyle(ButtonStyle.Link),
+      new ButtonBuilder().setLabel('📩 Discord').setURL('https://discord.gg/ByCV38w23f').setStyle(ButtonStyle.Link),
+    );
+
+    await i.channel.send({ embeds: [embedPrincipal], components: [row1, row2] });
+    await i.editReply({ content: '✅ Painel criado!' });
+  }
+
   // /divulgar
   else if (cmd === 'divulgar') {
     if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
@@ -293,6 +344,18 @@ async function handleButton(i) {
   if (i.customId.startsWith('buy_')) {
     const plano = i.customId.replace('buy_', '');
     await openTicket(i, 'venda', plano, `🛒 Compra — ${plano.charAt(0).toUpperCase() + plano.slice(1)}`);
+  }
+  else if (i.customId === 'painel_comprar') {
+    await openTicket(i, 'venda', 'a definir', '🛒 Compra');
+  }
+  else if (i.customId === 'painel_suporte') {
+    await openTicket(i, 'suporte', null, '🎫 Suporte Técnico');
+  }
+  else if (i.customId === 'painel_key') {
+    await openTicket(i, 'suporte', null, '🔑 Problema com Chave');
+  }
+  else if (i.customId === 'painel_duvida') {
+    await openTicket(i, 'suporte', null, '❓ Dúvida Geral');
   }
   else if (i.customId === 'close_ticket') {
     await i.reply({ content: '🔒 Ticket a fechar em 5 segundos...' });

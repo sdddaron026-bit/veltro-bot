@@ -38,6 +38,10 @@ const commands = [
     .addChannelOption(o => o.setName('canal').setDescription('Canal onde enviar (opcional)')),
 
   new SlashCommandBuilder()
+    .setName('painel')
+    .setDescription('Criar painel completo do Veltro com todas as opções'),
+
+  new SlashCommandBuilder()
     .setName('admin')
     .setDescription('Comandos de administração')
     .addSubcommand(s => s.setName('gerar').setDescription('Gerar uma chave de licença')
