@@ -182,48 +182,44 @@ async function handleSlash(i) {
 
     await i.deferReply({ ephemeral: true });
 
-    // Embed principal
-    const embedPrincipal = new EmbedBuilder()
+    const embed = new EmbedBuilder()
       .setColor(0x0ea5e9)
-      .setAuthor({ name: 'Veltro — Painel de Otimização', iconURL: client.user.displayAvatarURL() })
-      .setTitle('⚡ Veltro Premium')
+      .setAuthor({ name: 'VELTRO OPTIMIZATION', iconURL: client.user.displayAvatarURL() })
+      .setTitle('💎 O Otimizador Mais Completo Para Windows')
       .setDescription(
-        '> O otimizador mais completo para Windows.\n> Mais FPS, menos lag, PC mais rápido.\n\n' +
-        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        '```ansi\n\u001b[1;36m⚡ PERFORMANCE  \u001b[0m+30~60 FPS garantidos\n' +
+        '\u001b[1;36m🌐 REDE         \u001b[0mPing reduzido, sem packet loss\n' +
+        '\u001b[1;36m🎯 AIM TRAINER  \u001b[0mTreina a tua mira integrado\n' +
+        '\u001b[1;36m🧹 LIMPEZA      \u001b[0mRAM, cache e lixo eliminados\n' +
+        '\u001b[1;36m🔒 SEGURANÇA    \u001b[0mPrivacidade e tweaks avançados\n' +
+        '\u001b[1;36m💾 500+ TWEAKS  \u001b[0mComandos reais no sistema\n```\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' +
+        '> 🏆 **Usado por centenas de jogadores**\n' +
+        '> 🔄 **Atualizações automáticas incluídas**\n' +
+        '> 💬 **Suporte 24/7 via Discord**\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+        '**💰 PLANOS DISPONÍVEIS**\n' +
+        '> 📅 **Mensal** — Acesso por 30 dias\n' +
+        '> 📆 **Trimestral** — Acesso por 90 dias\n' +
+        '> ♾️ **Vitalício** — Acesso para sempre\n\n' +
+        '*Clica num botão abaixo para começar* 👇'
       )
-      .addFields(
-        { name: '🚀 Performance',     value: 'CPU · GPU · RAM · Disco', inline: true },
-        { name: '🌐 Rede',            value: 'Ping · DNS · TCP/IP',      inline: true },
-        { name: '🎮 Gaming',          value: 'FPS · Input lag · DPI',    inline: true },
-        { name: '🧹 Limpeza',         value: 'Temp · Cache · Lixo',      inline: true },
-        { name: '🔒 Segurança',       value: 'Privacidade · Tweaks',     inline: true },
-        { name: '🎯 Aim Trainer',     value: 'Treino de mira integrado', inline: true },
-        { name: '💾 500+ Tweaks',     value: 'Comandos reais no sistema',inline: true },
-        { name: '🔄 Auto-Update',     value: 'Sempre na versão mais nova',inline: true },
-        { name: '💬 Suporte 24/7',    value: 'Discord sempre disponível', inline: true },
-      )
-      .addFields({
-        name: '💰 Planos',
-        value: '`Mensal` — 30 dias\n`Trimestral` — 90 dias\n`Vitalício` — Para sempre',
-        inline: false
-      })
-      .setFooter({ text: 'Veltro • veltrootm.netlify.app' })
+      .setFooter({ text: 'Veltro • veltrootm.netlify.app • Suporte no Discord', iconURL: client.user.displayAvatarURL() })
       .setTimestamp();
 
-    // Botões de ação
     const row1 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('painel_comprar').setLabel('🛒 Comprar').setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('painel_comprar').setLabel('🛒 Comprar Agora').setStyle(ButtonStyle.Primary),
       new ButtonBuilder().setCustomId('painel_suporte').setLabel('🎫 Suporte').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('painel_key').setLabel('🔑 Problema com Chave').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('painel_duvida').setLabel('❓ Dúvida').setStyle(ButtonStyle.Secondary),
     );
 
     const row2 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setLabel('🌐 Site').setURL('https://veltrootm.netlify.app').setStyle(ButtonStyle.Link),
-      new ButtonBuilder().setLabel('📩 Discord').setURL('https://discord.gg/ByCV38w23f').setStyle(ButtonStyle.Link),
+      new ButtonBuilder().setLabel('🌐 Site Oficial').setURL('https://veltrootm.netlify.app').setStyle(ButtonStyle.Link),
+      new ButtonBuilder().setLabel('📩 Entrar no Discord').setURL('https://discord.gg/ByCV38w23f').setStyle(ButtonStyle.Link),
     );
 
-    await i.channel.send({ embeds: [embedPrincipal], components: [row1, row2] });
+    await i.channel.send({ embeds: [embed], components: [row1, row2] });
     await i.editReply({ content: '✅ Painel criado!' });
   }
 
