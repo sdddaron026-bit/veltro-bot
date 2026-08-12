@@ -176,6 +176,47 @@ async function handleSlash(i) {
     await i.reply({ content: `✅ ${user} adicionado ao ticket.` });
   }
 
+  // /divulgar
+  else if (cmd === 'divulgar') {
+    if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
+
+    const canal = i.options.getChannel('canal') || i.channel;
+
+    const embed = new EmbedBuilder()
+      .setColor(0x0ea5e9)
+      .setAuthor({ name: 'Veltro — Otimizador Premium para Windows', iconURL: client.user.displayAvatarURL() })
+      .setTitle('⚡ O teu PC merece mais')
+      .setDescription(
+        '> Já imaginou ter **+30-60 FPS** a mais nos teus jogos favoritos?\n' +
+        '> O **Veltro** faz isso e muito mais — com 1 clique.\n\n' +
+        '```\n🚀 +500 tweaks de performance\n🎯 Aim Trainer integrado\n🌐 Otimização de rede e ping\n🧹 Limpeza de RAM automática\n🔒 Tweaks de segurança\n💾 Boost de disco e CPU\n```\n\n' +
+        '💬 **Suporte 24/7 via Discord**\n' +
+        '🔄 **Atualizações automáticas incluídas**\n' +
+        '✅ **Ativação instantânea por chave**\n\n' +
+        '━━━━━━━━━━━━━━━━━━━━━━━━\n' +
+        '🛒 **Adquire já o teu plano:**\n' +
+        '🔗 [Site oficial](https://veltrootm.netlify.app)\n' +
+        '📩 [Entrar no Discord](https://discord.gg/ByCV38w23f)'
+      )
+      .setImage('https://veltrootm.netlify.app/preview.png')
+      .setFooter({ text: 'Veltro • veltrootm.netlify.app', iconURL: client.user.displayAvatarURL() })
+      .setTimestamp();
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setLabel('🌐 Site Oficial')
+        .setURL('https://veltrootm.netlify.app')
+        .setStyle(ButtonStyle.Link),
+      new ButtonBuilder()
+        .setLabel('📩 Entrar no Discord')
+        .setURL('https://discord.gg/ByCV38w23f')
+        .setStyle(ButtonStyle.Link),
+    );
+
+    await canal.send({ embeds: [embed], components: [row] });
+    await i.reply({ content: `✅ Divulgação enviada em ${canal}!`, ephemeral: true });
+  }
+
   // /admin
   else if (cmd === 'admin') {
     if (!isAdmin(i.member))
