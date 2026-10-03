@@ -27,8 +27,27 @@ function isAdmin(member) {
          (process.env.ADMIN_ROLE && member.roles.cache.has(process.env.ADMIN_ROLE));
 }
 
-const tickets  = new Map();
-const licenses = new Map();
+const tickets = new Map();
+const fs = require('fs');
+const LICENSES_FILE = './licenses.json';
+
+function loadLicenses() {
+  try {
+    if (fs.existsSync(LICENSES_FILE)) {
+      const data = JSON.parse(fs.readFileSync(LICENSES_FILE, 'utf8'));
+      return new Map(Object.entries(data));
+    }
+  } catch {}
+  return new Map();
+}
+
+function saveLicenses() {
+  const obj = Object.fromEntries(licenses);
+  fs.writeFileSync(LICENSES_FILE, JSON.stringify(obj, null, 2));
+}
+
+const licenses = loadLicenses();
+
 
 // ── Ready ──────────────────────────────────────────────────────────────────
 client.once('ready', () => {
