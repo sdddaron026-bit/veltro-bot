@@ -74,9 +74,11 @@ client.on('interactionCreate', async (interaction) => {
 async function handleSlash(i) {
   const cmd = i.commandName;
 
+  // /setup — FIX: deferReply antes da verificação de permissões
   if (cmd === 'setup') {
-    if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
     await i.deferReply({ ephemeral: true });
+    if (!isAdmin(i.member)) return i.editReply({ content: '❌ Sem permissão.' });
+
     const embed = new EmbedBuilder()
       .setColor(0x0ea5e9)
       .setTitle('Veltros Optimization')
@@ -177,9 +179,11 @@ async function handleSlash(i) {
     await i.reply({ content: `✅ ${user} adicionado ao ticket.` });
   }
 
+  // /painel — FIX: deferReply antes da verificação de permissões
   else if (cmd === 'painel') {
-    if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
     await i.deferReply({ ephemeral: true });
+    if (!isAdmin(i.member)) return i.editReply({ content: '❌ Sem permissão.' });
+
     const embed = new EmbedBuilder()
       .setColor(0x0ea5e9)
       .setAuthor({ name: 'VELTRO OPTIMIZATION', iconURL: client.user.displayAvatarURL() })
@@ -218,8 +222,11 @@ async function handleSlash(i) {
     await i.editReply({ content: '✅ Painel criado!' });
   }
 
+  // /divulgar — FIX: deferReply antes da verificação de permissões
   else if (cmd === 'divulgar') {
-    if (!isAdmin(i.member)) return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
+    await i.deferReply({ ephemeral: true });
+    if (!isAdmin(i.member)) return i.editReply({ content: '❌ Sem permissão.' });
+
     const canal = i.options.getChannel('canal') || i.channel;
     const embed = new EmbedBuilder()
       .setColor(0x0ea5e9)
@@ -245,12 +252,14 @@ async function handleSlash(i) {
       new ButtonBuilder().setLabel('📩 Entrar no Discord').setURL('https://discord.gg/ByCV38w23f').setStyle(ButtonStyle.Link),
     );
     await canal.send({ embeds: [embed], components: [row] });
-    await i.reply({ content: `✅ Divulgação enviada em ${canal}!`, ephemeral: true });
+    await i.editReply({ content: `✅ Divulgação enviada em ${canal}!` });
   }
 
+  // /admin — FIX: deferReply antes da verificação de permissões
   else if (cmd === 'admin') {
-    if (!isAdmin(i.member))
-      return i.reply({ content: '❌ Sem permissão.', ephemeral: true });
+    await i.deferReply({ ephemeral: true });
+    if (!isAdmin(i.member)) return i.editReply({ content: '❌ Sem permissão.' });
+
     const sub = i.options.getSubcommand();
 
     if (sub === 'gerar') {
@@ -270,7 +279,7 @@ async function handleSlash(i) {
           { name: 'Expira',  value: new Date(expiry).toLocaleDateString('pt-BR'), inline: true  },
           { name: 'Cliente', value: cliente ? `${cliente}` : 'Não atribuído',     inline: true  },
         );
-      await i.reply({ embeds: [embed], ephemeral: true });
+      await i.editReply({ embeds: [embed] });
       if (cliente) {
         try {
           const dm = new EmbedBuilder()
@@ -291,15 +300,15 @@ async function handleSlash(i) {
     else if (sub === 'revogar') {
       const chave = i.options.getString('chave').trim().toUpperCase();
       const lic   = licenses.get(chave);
-      if (!lic) return i.reply({ content: '❌ Chave não encontrada.', ephemeral: true });
+      if (!lic) return i.editReply({ content: '❌ Chave não encontrada.' });
       lic.active = false;
       saveLicenses();
-      await i.reply({ content: `✅ Chave \`${chave}\` revogada.`, ephemeral: true });
+      await i.editReply({ content: `✅ Chave \`${chave}\` revogada.` });
     }
 
     else if (sub === 'clientes') {
       const ativos = [...licenses.entries()].filter(([, l]) => l.active && Date.now() < l.expiry);
-      if (!ativos.length) return i.reply({ content: '📭 Nenhum cliente ativo.', ephemeral: true });
+      if (!ativos.length) return i.editReply({ content: '📭 Nenhum cliente ativo.' });
       const lista = ativos.map(([k, l]) => {
         const exp = new Date(l.expiry).toLocaleDateString('pt-BR');
         return `\`${k}\` · ${l.plano} · expira ${exp} · <@${l.userId || 'N/A'}>`;
@@ -308,7 +317,7 @@ async function handleSlash(i) {
         .setColor(0x0ea5e9)
         .setTitle(`📊 Clientes Ativos (${ativos.length})`)
         .setDescription(lista.slice(0, 4000));
-      await i.reply({ embeds: [embed], ephemeral: true });
+      await i.editReply({ embeds: [embed] });
     }
   }
 }
