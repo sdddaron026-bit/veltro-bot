@@ -474,6 +474,7 @@ async function handleSlash(i) {
     if (sub === 'dm') {
       const userId   = i.options.getString('id').trim();
       const mensagem = i.options.getString('mensagem');
+      const imagem   = i.options.getString('imagem') || null;
 
       let alvo;
       try {
@@ -488,6 +489,8 @@ async function handleSlash(i) {
         .setDescription(mensagem)
         .setTimestamp()
         .setFooter({ text: 'Veltro • veltrootm.netlify.app' });
+
+      if (imagem) embed.setImage(imagem);
 
       try {
         await alvo.send({ embeds: [embed] });

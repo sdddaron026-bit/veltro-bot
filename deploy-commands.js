@@ -128,7 +128,11 @@ const commands = [
         .setName('mensagem')
         .setDescription('Conteúdo da mensagem')
         .setRequired(true)
-        .setMaxLength(2000))),
+        .setMaxLength(2000))
+      .addStringOption(o => o
+        .setName('imagem')
+        .setDescription('Link de uma imagem para incluir (opcional)')
+        .setRequired(false))),
 
 ].map(c => c.toJSON());
 
