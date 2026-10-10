@@ -119,10 +119,10 @@ const commands = [
       .setDescription('Ver estatísticas gerais das licenças'))
     .addSubcommand(s => s
       .setName('dm')
-      .setDescription('Enviar mensagem privada a um utilizador')
-      .addUserOption(o => o
-        .setName('utilizador')
-        .setDescription('Utilizador a quem enviar a mensagem')
+      .setDescription('Enviar mensagem privada a um utilizador pelo ID')
+      .addStringOption(o => o
+        .setName('id')
+        .setDescription('ID do utilizador')
         .setRequired(true))
       .addStringOption(o => o
         .setName('mensagem')

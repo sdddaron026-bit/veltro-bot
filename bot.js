@@ -472,8 +472,15 @@ async function handleSlash(i) {
     }
 
     if (sub === 'dm') {
-      const alvo     = i.options.getUser('utilizador');
+      const userId   = i.options.getString('id').trim();
       const mensagem = i.options.getString('mensagem');
+
+      let alvo;
+      try {
+        alvo = await client.users.fetch(userId);
+      } catch {
+        return i.editReply('❌ ID inválido. Não encontrei nenhum utilizador com esse ID.');
+      }
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
@@ -484,9 +491,9 @@ async function handleSlash(i) {
 
       try {
         await alvo.send({ embeds: [embed] });
-        return i.editReply(`✅ Mensagem enviada para ${alvo} com sucesso!`);
+        return i.editReply(`✅ Mensagem enviada para **${alvo.tag}** com sucesso!`);
       } catch {
-        return i.editReply(`❌ Não consegui enviar DM para ${alvo}. O utilizador pode ter as DMs desativadas.`);
+        return i.editReply(`❌ Não consegui enviar DM para **${alvo.tag}**. O utilizador pode ter as DMs desativadas.`);
       }
     }
 
