@@ -1,5 +1,6 @@
 {
   "name": "veltro-bot",
+<<<<<<< HEAD
   "version": "2.0.0",
   "description": "Veltro Sales & Support Bot — com Firestore, tickets, admin completo",
   "main": "bot.js",
@@ -14,5 +15,17 @@
   },
   "engines": {
     "node": ">=18.0.0"
+=======
+  "version": "1.0.0",
+  "description": "Veltro Sales & Support Bot",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "deploy": "node deploy-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "14.15.3",
+    "dotenv": "16.4.5"
+>>>>>>> 212270ac6f6225b2436823fcd673f7eba3952ccb
   }
 }
