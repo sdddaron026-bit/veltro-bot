@@ -688,6 +688,15 @@ async function saveTranscript(channel, guild) {
 }
 
 // ═══════════════════════════════════════════════════════
+// HTTP SERVER (para o Render não matar o serviço)
+// ═══════════════════════════════════════════════════════
+const http = require('http');
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => res.end('OK')).listen(PORT, () => {
+  console.log(`🌐 HTTP server a correr na porta ${PORT}`);
+});
+
+// ═══════════════════════════════════════════════════════
 // START
 // ═══════════════════════════════════════════════════════
 client.login(process.env.BOT_TOKEN);
